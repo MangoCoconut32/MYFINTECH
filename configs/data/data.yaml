@@ -1,0 +1,31 @@
+# =============================================================================
+# data/data.yaml — Data Source & Split Configuration
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Source paths (relative to the project root, resolved by the DataLoader)
+# ---------------------------------------------------------------------------
+raw_excel_path: "Dataset2_Needs.xls"          # Immutable professor file
+dfs_csv_path: "Dataset2_Needs_DFS.csv"         # Pre-built DFS feature set (default read)
+frozen_csv_path: "data/processed/Dataset_Needs_SOTA.csv"  # Written by DatasetFreezer
+
+# ---------------------------------------------------------------------------
+# Dataset constants (must match the original 00x_freeze_dataset.py protocol)
+# ---------------------------------------------------------------------------
+train_val_size: 4000      # Rows 0-3999 → Train/Val block (stratified_fold ≥ 0)
+test_size: 1000           # Rows 4000-4999 → Blind Test block (stratified_fold == -1)
+n_splits: 5               # Number of stratified folds
+random_state: 42
+
+# ---------------------------------------------------------------------------
+# Schema
+# ---------------------------------------------------------------------------
+id_col: "ID"
+fold_col: "stratified_fold"
+target_cols:
+  - "AccumulationInvestment"
+  - "IncomeInvestment"
+stratify_col: "stratify_combined"   # Synthetic dual-parity column (dropped after freeze)
+
+# Primary target for single-target experiments
+primary_target: "IncomeInvestment"

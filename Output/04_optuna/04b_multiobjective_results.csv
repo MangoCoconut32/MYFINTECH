@@ -1,7 +1,0 @@
-Target,Variant,AUC,Brier,LogLoss
-AccumulationInvestment,Raw XGBoost,0.869,0.132,0.41
-AccumulationInvestment,Platt (sigmoid),0.864,0.136,0.425
-AccumulationInvestment,Isotonic,0.865,0.132,0.407
-IncomeInvestment,Raw XGBoost,0.758,0.166,0.509
-IncomeInvestment,Platt (sigmoid),0.761,0.166,0.509
-IncomeInvestment,Isotonic,0.761,0.164,0.501

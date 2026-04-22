@@ -1,7 +1,0 @@
-Algorithm,Target,CV ROC-AUC (±Std),Test Precision,Test Recall,Test F1,Test ROC-AUC
-Voting (Soft),AccumulationInvestment,0.858 (±0.014),0.836,0.745,0.788,0.849
-Voting (Hard),AccumulationInvestment,0.826 (±0.010),0.868,0.745,0.802,0.813
-Stacking (Meta: LR),AccumulationInvestment,0.869 (±0.013),0.860,0.764,0.809,0.865
-Voting (Soft),IncomeInvestment,0.803 (±0.017),0.843,0.531,0.652,0.745
-Voting (Hard),IncomeInvestment,0.784 (±0.018),0.854,0.531,0.655,0.737
-Stacking (Meta: LR),IncomeInvestment,0.807 (±0.015),0.827,0.536,0.651,0.760

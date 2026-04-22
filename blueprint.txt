@@ -1,0 +1,95 @@
+# SOTA Quantitative Finance Project Blueprint
+
+### 1. Standardized Directory Architecture
+Every new project must adhere strictly to this directory structure to ensure modularity, separation of concerns, configuration management, and scalability.
+
+project_root/
+├── configs/                 # Hydra configuration directory
+│   ├── config.yaml          # Master configuration file
+│   ├── data/                # Data-specific configs (paths, splits, feature lists)
+│   ├── model/               # Model-specific configs (hyperparameters)
+│   └── training/            # Execution configs (epochs, batch size, Optuna settings)
+├── data/                    # Local data (Must be ignored in .gitignore)
+│   ├── raw/                 # Immutable original data
+│   └── processed/           # Cleaned, feature-engineered data
+├── notebooks/               # For EDA and Reporting ONLY
+│   ├── scripts/             # Python scripts written with # %% cell markers
+│   │   ├── 01_eda.py        # Exploratory Data Analysis script
+│   │   └── 02_report.py     # Final performance, plots, and justification
+│   └── rendered/            # Final .ipynb files generated via Jupytext (Ignored in Git)
+├── src/                     # Core Python modules (Highly reusable)
+│   ├── __init__.py
+│   ├── data/                # Loaders, validators, train/test/val splitters
+│   ├── features/            # Feature engineering and transformations
+│   ├── models/              # Model definitions (Base class + specific models)
+│   ├── evaluation/          # Metrics, backtesting, and reporting logic
+│   └── utils/               # Logging, custom exceptions, helpers
+├── cpp_core/                # (Future) High-performance C++ execution/pricing engines
+├── tests/                   # Pytest directory (Unit and integration tests)
+├── main.py                  # The Hydra execution orchestrator
+├── requirements.txt         # Python dependencies
+└── README.md                # Project documentation
+
+
+### 2. The Core Orchestrator (main.py)
+This file is the single entry point for the project. It handles dynamic configuration via Hydra and delegates logic to the `src/` modules. It should look structurally similar to this:
+
+import hydra
+import logging
+from omegaconf import DictConfig, OmegaConf
+from src.data.loader import DataLoader
+from src.models.trainer import ModelTrainer
+
+# Set up standard logging
+logger = logging.getLogger(__name__)
+
+@hydra.main(version_base=None, config_path="configs", config_name="config")
+def main(cfg: DictConfig) -> None:
+    """
+    Main execution pipeline for the quantitative finance project.
+    """
+    logger.info("Initializing pipeline with the following configuration:")
+    logger.info(f"\n{OmegaConf.to_yaml(cfg)}")
+    
+    # 1. Load Data
+    loader = DataLoader(cfg.data)
+    X_train, y_train, X_test, y_test = loader.get_splits()
+    
+    # 2. Train/Execute Model
+    trainer = ModelTrainer(cfg.model, cfg.training)
+    model = trainer.train(X_train, y_train)
+    
+    # 3. Evaluate
+    logger.info("Pipeline executed successfully.")
+
+if __name__ == "__main__":
+    main()
+
+
+### 3. Notebook Workflow (Strict Rule)
+Do NOT work directly in `.ipynb` files or output raw JSON notebook code. 
+All EDA and final reporting must be written as standard Python scripts (`.py`) using percent formatting inside the `notebooks/scripts/` directory.
+
+Example of a valid notebook script (`notebooks/scripts/01_eda.py`):
+# %% [markdown]
+# # Exploratory Data Analysis
+# In this section, we analyze the data distributions.
+
+# %%
+import pandas as pd
+import logging
+logger = logging.getLogger(__name__)
+# ... code continues ...
+
+These scripts will be compiled into final `.ipynb` files inside `notebooks/rendered/` only at the very end of the workflow using Jupytext or a compatible IDE.
+
+
+### 4. Strict Coding Standards
+When generating code or Implementation Plans, the following rules are absolute:
+
+* **Type Hinting:** All functions and methods must use strict Python type hinting (e.g., `def calculate_var(returns: pd.Series, alpha: float = 0.05) -> float:`).
+* **Docstrings:** All classes and functions must use Google-style docstrings, clearly outlining `Args:`, `Returns:`, and `Raises:`.
+* **Logging vs. Printing:** Never use `print()`. Always use Python's built-in `logging` module to track execution and debug information.
+* **Object-Oriented Programming (OOP):** Wrap related logic in classes. Use Base classes (e.g., `BaseModel`) to enforce consistent interfaces (like `.fit()`, `.predict()`) across all modules.
+* **Separation of Concerns:** Data processing logic must never bleed into model training logic. Keep functions small, modular, and focused on a single task.
+* **Testing:** Code written for the `src/` directory should be accompanied by relevant unit tests in the `tests/` directory using `pytest`.

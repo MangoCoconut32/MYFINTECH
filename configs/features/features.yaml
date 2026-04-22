@@ -1,0 +1,56 @@
+# =============================================================================
+# features/features.yaml — Feature Engineering Configuration
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Base (raw) columns from Dataset2_Needs.xls
+# ---------------------------------------------------------------------------
+base_cols:
+  - "Age"
+  - "Gender"
+  - "FamilyMembers"
+  - "FinancialEducation"
+  - "RiskPropensity"
+  - "Income"
+  - "Wealth"
+
+# ---------------------------------------------------------------------------
+# Alois Engineered Features (Anima Alois — Domain Knowledge)
+# These are computed deterministically by PipelineXTransformer.
+# ---------------------------------------------------------------------------
+alois_engineered:
+  - "Wealth_log"
+  - "Income_log"
+  - "Wealth_Age_Ratio_log"
+  - "Wealth_per_person"
+  - "Income_per_person"
+  - "Income_Wealth_Ratio_log"
+  - "Age_bracket_Young"
+  - "Age_bracket_Mid"
+  - "Age_bracket_Senior"
+
+# ---------------------------------------------------------------------------
+# Deep Feature Synthesis (Anima MOA — Brute Force)
+# ---------------------------------------------------------------------------
+dfs:
+  enabled: false            # Set to true to run DFS on top of Alois features
+  depth: 1                  # DFS max_depth (1 = pairwise primitives)
+  top_n: 15                 # Number of top DFS features selected by LightGBM importance
+  primitives:               # Featuretools transform primitives
+    - "add_numeric"
+    - "multiply_numeric"
+    - "divide_numeric"
+    - "percentile"
+
+# ---------------------------------------------------------------------------
+# Anti-correlation deduplication
+# ---------------------------------------------------------------------------
+corr_threshold: 0.90        # Drop DFS features correlated > 0.90 with Alois features
+
+# ---------------------------------------------------------------------------
+# Boruta (future Phase 2 — placeholder)
+# ---------------------------------------------------------------------------
+boruta:
+  enabled: false
+  max_iter: 100
+  alpha: 0.05

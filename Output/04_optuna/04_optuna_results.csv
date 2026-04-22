@@ -1,5 +1,0 @@
-Algorithm,Target,Model,Best Parameters,CV ROC-AUC (±Std),Test ROC-AUC
-Optuna,AccumulationInvestment,Random Forest,"{'n_estimators': 150, 'max_depth': 9, 'min_samples_leaf': 3}",0.867 (±0.013),0.862
-Optuna,AccumulationInvestment,XGBoost,"{'n_estimators': 150, 'max_depth': 5, 'learning_rate': 0.0015974735879890165, 'subsample': 0.6027150284673527}",0.873 (±0.010),0.867
-Optuna,IncomeInvestment,Random Forest,"{'n_estimators': 200, 'max_depth': 9, 'min_samples_leaf': 7}",0.806 (±0.012),0.765
-Optuna,IncomeInvestment,XGBoost,"{'n_estimators': 150, 'max_depth': 3, 'learning_rate': 0.05019777031829953, 'subsample': 0.6091327986764876}",0.807 (±0.017),0.761

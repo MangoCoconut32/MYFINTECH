@@ -1,3 +1,0 @@
-Algorithm,Target,Test ROC-AUC,F1 Macro,F1 Class-1,Precision Class-1,Recall Class-1
-TabNet SSL + MTL (PyTorch),AccumulationInvestment,0.8182,0.7617,0.7443,0.8333,0.6725
-TabNet SSL + MTL (PyTorch),IncomeInvestment,0.8174,0.7405,0.6407,0.9336,0.4876

@@ -1,3 +1,0 @@
-Client_ID,Type,Age,Gender,FamilyMembers,FinancialEducation,RiskPropensity,Income,Wealth,Wealth_log,Income_log,Wealth_per_person,Income_per_person,Inc_to_Wealth_ratio,Age_bracket_Young,Age_bracket_Mid,Age_bracket_Senior
-4722.0,Original,64.0,0.0,3.0,0.5676279067993164,0.4231800138950348,32.54146957397461,163.2630157470703,5.101469039916992,3.512782573699951,54.42100524902344,10.847156524658203,0.19931930303573608,0.0,0.0,1.0
-4722.0,Required,64.0,0.0,3.0,0.567628,0.423205316,34.80516,164.37195,5.101469,3.512783,54.421005,10.847157,0.1993193,0.0,0.0,1.0

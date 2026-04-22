@@ -1,0 +1,21 @@
+# =============================================================================
+# config.yaml — Master Configuration (Hydra Defaults List)
+# =============================================================================
+# This is the single entry point for Hydra. Downstream config groups are loaded
+# by the defaults list; each key maps to a sub-directory YAML.
+
+defaults:
+  - data: data
+  - features: features
+  - model: xgboost
+  - pipeline: train
+  - training: training
+  - _self_        # Allows keys defined here to override defaults
+
+# ---------------------------------------------------------------------------
+# Top-level metadata (not overridden by sub-configs)
+# ---------------------------------------------------------------------------
+project:
+  name: myfintech_pipeline
+  version: "1.0.0"
+  random_state: 42

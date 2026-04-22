@@ -1,7 +1,0 @@
-Algorithm,Target,Model,Best Parameters,CV ROC-AUC (±Std),Test ROC-AUC
-GridSearch,AccumulationInvestment,Random Forest,"{'max_depth': 7, 'min_samples_leaf': 8, 'n_estimators': 200}",0.863 (±0.015),0.854
-GridSearch,AccumulationInvestment,XGBoost,"{'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 100, 'subsample': 1.0}",0.871 (±0.012),0.862
-GridSearch,AccumulationInvestment,SVM,"{'C': 10.0, 'gamma': 'scale', 'kernel': 'rbf'}",0.787 (±0.017),0.762
-GridSearch,IncomeInvestment,Random Forest,"{'max_depth': 7, 'min_samples_leaf': 8, 'n_estimators': 200}",0.805 (±0.013),0.760
-GridSearch,IncomeInvestment,XGBoost,"{'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 200, 'subsample': 1.0}",0.806 (±0.014),0.750
-GridSearch,IncomeInvestment,SVM,"{'C': 10.0, 'gamma': 'scale', 'kernel': 'linear'}",0.778 (±0.021),0.730

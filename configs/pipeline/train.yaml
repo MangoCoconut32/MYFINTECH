@@ -1,0 +1,7 @@
+# =============================================================================
+# pipeline/train.yaml — Execution Mode: Training
+# =============================================================================
+# cfg.pipeline.step controls which PipelineOrchestrator branch executes.
+# Valid values: data_prep | train | evaluate | audit
+
+step: "train"
