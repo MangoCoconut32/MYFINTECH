@@ -1,0 +1,3 @@
+Target,Model,Test_ROC_AUC,Test_Precision,Test_Recall,Test_F1,XGB_Optuna_AUC_reference,Delta_vs_XGB
+AccumulationInvestment,EBM (glassbox),0.8636,0.8805,0.7466,0.808,0.867,-0.0034
+IncomeInvestment,EBM (glassbox),0.7621,0.8608,0.5312,0.657,0.761,0.0011

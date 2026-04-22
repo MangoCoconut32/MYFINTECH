@@ -1,0 +1,23 @@
+{
+    "statistical_audit": {
+        "accumulation": {
+            "auc_delta_ci": [
+                -0.011617739371185197,
+                0.010021395184299153
+            ],
+            "status": "MARGINAL"
+        },
+        "income": {
+            "auc_delta_ci": [
+                -0.027334223132305605,
+                0.007931304167828595
+            ],
+            "status": "MARGINAL"
+        }
+    },
+    "audit_cases": [
+        0,
+        50,
+        100
+    ]
+}

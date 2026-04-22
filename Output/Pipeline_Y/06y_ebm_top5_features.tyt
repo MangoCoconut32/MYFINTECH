@@ -1,0 +1,12 @@
+EBM Top-5 Shape Function Contributors — AccumulationInvestment
+============================================================
+Model: 03x_ebm_acc_model.pkl
+Global AUC (test): 0.8866
+EBM Terms total  : 23 (main effects + interactions)
+============================================================
+
+  1. Inc_to_Wealth_ratio                       importance=1.2880  [main effect]
+  2. Age & Inc_to_Wealth_ratio                 importance=0.4069  [main effect]
+  3. Wealth                                    importance=0.3292  [main effect]
+  4. Wealth_log                                importance=0.3258  [main effect]
+  5. Age & FinancialEducation                  importance=0.2175  [main effect]

@@ -1,0 +1,76 @@
+{
+    "AccumulationInvestment": {
+        "XGB": {
+            "best_auc_cv": 0.86492,
+            "best_auc_test": 0.87556,
+            "params": {
+                "n_estimators": 231,
+                "max_depth": 3,
+                "learning_rate": 0.04783180860655219,
+                "subsample": 0.6825299066376622,
+                "colsample_bytree": 0.7332965949405019
+            }
+        },
+        "LGBM": {
+            "best_auc_cv": 0.8645,
+            "best_auc_test": 0.87735,
+            "params": {
+                "n_estimators": 291,
+                "max_depth": 3,
+                "num_leaves": 32,
+                "learning_rate": 0.04389519347626914,
+                "feature_fraction": 0.8944959824734422,
+                "bagging_fraction": 0.9067563940814798,
+                "bagging_freq": 1,
+                "min_child_samples": 76
+            }
+        },
+        "RF": {
+            "best_auc_cv": 0.85786,
+            "best_auc_test": 0.87726,
+            "params": {
+                "n_estimators": 230,
+                "max_depth": 12,
+                "min_samples_split": 5,
+                "min_samples_leaf": 9
+            }
+        }
+    },
+    "IncomeInvestment": {
+        "XGB": {
+            "best_auc_cv": 0.79198,
+            "best_auc_test": 0.80374,
+            "params": {
+                "n_estimators": 396,
+                "max_depth": 6,
+                "learning_rate": 0.07045060074426361,
+                "subsample": 0.8804487004338808,
+                "colsample_bytree": 0.96694227197795
+            }
+        },
+        "LGBM": {
+            "best_auc_cv": 0.7912,
+            "best_auc_test": 0.80223,
+            "params": {
+                "n_estimators": 235,
+                "max_depth": 3,
+                "num_leaves": 46,
+                "learning_rate": 0.010161068900017039,
+                "feature_fraction": 0.9916789412255327,
+                "bagging_fraction": 0.8922948217608075,
+                "bagging_freq": 1,
+                "min_child_samples": 23
+            }
+        },
+        "RF": {
+            "best_auc_cv": 0.79135,
+            "best_auc_test": 0.80514,
+            "params": {
+                "n_estimators": 359,
+                "max_depth": 8,
+                "min_samples_split": 9,
+                "min_samples_leaf": 7
+            }
+        }
+    }
+}

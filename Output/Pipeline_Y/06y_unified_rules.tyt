@@ -1,0 +1,13 @@
+--- Accumulation ---
+  1. Inc_to_Wealth_ratio            importance=1.2880
+  2. Age & Inc_to_Wealth_ratio      importance=0.4069
+  3. Wealth                         importance=0.3292
+  4. Wealth_log                     importance=0.3258
+  5. Age & FinancialEducation       importance=0.2175
+
+--- Income ---
+  1. Age                            importance=0.3810
+  2. Wealth_log                     importance=0.3785
+  3. Wealth                         importance=0.3690
+  4. Inc_to_Wealth_ratio            importance=0.3216
+  5. Age & Wealth                   importance=0.1618

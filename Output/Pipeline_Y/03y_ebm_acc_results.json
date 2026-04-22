@@ -1,0 +1,40 @@
+{
+  "target": "AccumulationInvestment",
+  "model": "EBM (InterpretML GA2M)",
+  "cv_auc_mean": 0.8637,
+  "cv_auc_std": 0.0106,
+  "test_auc": 0.8866,
+  "test_brier": 0.1237,
+  "test_precision": 0.898,
+  "test_recall": 0.77,
+  "test_f1": 0.8291,
+  "xgb_reference_auc": 0.8871,
+  "delta_vs_xgb": -0.0005,
+  "ebm_n_terms": 23,
+  "ebm_params": {
+    "feature_names": [
+      "Age",
+      "Gender",
+      "FamilyMembers",
+      "FinancialEducation",
+      "RiskPropensity",
+      "Income",
+      "Wealth",
+      "Wealth_log",
+      "Income_log",
+      "Wealth_per_person",
+      "Income_per_person",
+      "Inc_to_Wealth_ratio",
+      "Age_bracket_Young",
+      "Age_bracket_Mid",
+      "Age_bracket_Senior"
+    ],
+    "learning_rate": 0.00541200919075048,
+    "max_bins": 128,
+    "interactions": 8,
+    "min_samples_leaf": 6,
+    "outer_bags": 8,
+    "inner_bags": 0,
+    "random_state": 42
+  }
+}
