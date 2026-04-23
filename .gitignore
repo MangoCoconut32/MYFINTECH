@@ -158,3 +158,6 @@ data/processed/
 Output/
 logs/
 .agent/
+multirun/
+outputs/
+data/

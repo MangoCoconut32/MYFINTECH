@@ -7,6 +7,11 @@ matplotlib>=3.7
 # Gradient boosting
 xgboost>=2.0
 lightgbm>=4.0
+catboost>=1.2
+
+# Specialized models
+interpret>=0.4
+pytorch-tabnet>=4.1
 
 # Hydra / config management
 hydra-core>=1.3

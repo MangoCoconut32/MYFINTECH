@@ -1,43 +1,40 @@
 # =============================================================================
-# model/xgboost.yaml — XGBoost Model Configuration
+# model/lightgbm.yaml — LightGBM Configuration
 # =============================================================================
 
-name: "xgboost"
+name: "lightgbm"
 requires_scaling: false
 
 # ---------------------------------------------------------------------------
 # Calibration
 # ---------------------------------------------------------------------------
 calibration:
-  method: "isotonic"    # "isotonic" or "sigmoid"
-  ensemble: false       # CalibratedClassifierCV ensemble mode
+  method: "isotonic"
+  ensemble: false
 
 # ---------------------------------------------------------------------------
 # Optuna Hyperparameter Tuning
 # ---------------------------------------------------------------------------
 optuna:
-  n_trials: 50          # Number of Optuna trials per target
-  direction: "maximize" # Maximise 5-fold CV ROC-AUC
-  timeout_seconds: null # null = no timeout
+  n_trials: 50
+  direction: "maximize"
+  timeout_seconds: null
 
 # ---------------------------------------------------------------------------
-# XGBoost Hyperparameter Defaults
-# (These are the starting point; Optuna will search the ranges below)
+# LightGBM Hyperparameter Defaults
 # ---------------------------------------------------------------------------
 hyperparameters:
-  n_estimators: 400
+  n_estimators: 1000
   learning_rate: 0.05
-  max_depth: 5
-  min_child_weight: 3
+  num_leaves: 31
+  max_depth: -1
+  min_child_samples: 20
   subsample: 0.8
   colsample_bytree: 0.8
-  gamma: 0.1
   reg_alpha: 0.1
-  reg_lambda: 1.0
-  eval_metric: "logloss"
-  tree_method: "hist"
+  reg_lambda: 0.1
   n_jobs: -1
-  verbosity: 0
+  verbosity: -1
 
 # ---------------------------------------------------------------------------
 # Optuna Search Ranges
@@ -46,49 +43,35 @@ search_space:
   n_estimators:
     type: int
     low: 200
-    high: 800
+    high: 1500
     step: 100
   learning_rate:
     type: float
     low: 0.01
-    high: 0.3
+    high: 0.2
     log: true
+  num_leaves:
+    type: int
+    low: 20
+    high: 150
   max_depth:
     type: int
     low: 3
-    high: 8
-  min_child_weight:
-    type: int
-    low: 1
-    high: 10
+    high: 12
   subsample:
     type: float
-    low: 0.6
+    low: 0.5
     high: 1.0
   colsample_bytree:
     type: float
     low: 0.5
     high: 1.0
-  gamma:
-    type: float
-    low: 0.0
-    high: 5.0
-  reg_alpha:
-    type: float
-    low: 0.0001
-    high: 10.0
-    log: true
-  reg_lambda:
-    type: float
-    low: 0.0001
-    high: 10.0
-    log: true
 
 # ---------------------------------------------------------------------------
-# Artifact paths (relative to project root)
+# Artifact paths
 # ---------------------------------------------------------------------------
 artifacts:
   output_dir: "data/processed/models"
-  model_prefix: "xgb"
-  best_params_file: "data/processed/models/xgb_best_params.json"
-  performance_file: "data/processed/models/xgb_performance.json"
+  model_prefix: "lgb"
+  best_params_file: "data/processed/models/lgb_best_params.json"
+  performance_file: "data/processed/models/lgb_performance.json"

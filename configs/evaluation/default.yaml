@@ -1,0 +1,11 @@
+# =============================================================================
+# evaluation/default.yaml — Evaluation Engine Configuration
+# =============================================================================
+
+# Artifact paths
+artifacts:
+  metrics_dir: "data/reports/metrics"
+  metrics_file: "data/reports/metrics/evaluation_metrics.json"
+
+# Threshold for hard class predictions
+classification_threshold: 0.5

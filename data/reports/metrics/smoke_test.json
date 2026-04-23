@@ -1,0 +1,7 @@
+{
+  "ROC_AUC": 0.993,
+  "Brier_Score": 0.1832,
+  "Precision": 1.0,
+  "Recall": 0.8571,
+  "F1_Score": 0.9231
+}

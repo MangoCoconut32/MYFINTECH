@@ -1,0 +1,70 @@
+# =============================================================================
+# model/ebm.yaml — Explainable Boosting Machine (InterpretML)
+# =============================================================================
+
+name: "ebm"
+requires_scaling: false
+
+# ---------------------------------------------------------------------------
+# Calibration
+# ---------------------------------------------------------------------------
+calibration:
+  method: "isotonic"
+  ensemble: false
+
+# ---------------------------------------------------------------------------
+# Optuna Hyperparameter Tuning
+# ---------------------------------------------------------------------------
+optuna:
+  n_trials: 30
+  direction: "maximize"
+  timeout_seconds: null
+
+# ---------------------------------------------------------------------------
+# EBM Hyperparameter Defaults
+# ---------------------------------------------------------------------------
+hyperparameters:
+  outer_bags: 8
+  inner_bags: 0
+  learning_rate: 0.01
+  max_bins: 256
+  max_interaction_bins: 32
+  interactions: 10
+  min_samples_leaf: 2
+  max_leaves: 3
+  n_jobs: -1
+
+# ---------------------------------------------------------------------------
+# Optuna Search Ranges
+# ---------------------------------------------------------------------------
+search_space:
+  outer_bags:
+    type: int
+    low: 4
+    high: 16
+  learning_rate:
+    type: float
+    low: 0.005
+    high: 0.05
+    log: true
+  interactions:
+    type: int
+    low: 5
+    high: 20
+  max_bins:
+    type: int
+    low: 128
+    high: 512
+  min_samples_leaf:
+    type: int
+    low: 2
+    high: 10
+
+# ---------------------------------------------------------------------------
+# Artifact paths
+# ---------------------------------------------------------------------------
+artifacts:
+  output_dir: "data/processed/models"
+  model_prefix: "ebm"
+  best_params_file: "data/processed/models/ebm_best_params.json"
+  performance_file: "data/processed/models/ebm_performance.json"
