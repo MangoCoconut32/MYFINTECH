@@ -1,0 +1,65 @@
+# =============================================================================
+# model/random_forest.yaml — Random Forest (Scikit-Learn)
+# =============================================================================
+
+name: "random_forest"
+requires_scaling: false
+
+# ---------------------------------------------------------------------------
+# Calibration
+# ---------------------------------------------------------------------------
+calibration:
+  method: "isotonic"
+  ensemble: false
+
+# ---------------------------------------------------------------------------
+# Optuna Hyperparameter Tuning
+# ---------------------------------------------------------------------------
+optuna:
+  n_trials: 40
+  direction: "maximize"
+  timeout_seconds: null
+
+# ---------------------------------------------------------------------------
+# Random Forest Hyperparameter Defaults
+# ---------------------------------------------------------------------------
+hyperparameters:
+  n_estimators: 200
+  max_depth: null
+  min_samples_split: 2
+  min_samples_leaf: 1
+  max_features: "sqrt"
+  bootstrap: true
+  n_jobs: -1
+  random_state: 42
+
+# ---------------------------------------------------------------------------
+# Optuna Search Ranges
+# ---------------------------------------------------------------------------
+search_space:
+  n_estimators:
+    type: int
+    low: 100
+    high: 1000
+    step: 100
+  max_depth:
+    type: int
+    low: 5
+    high: 50
+  min_samples_split:
+    type: int
+    low: 2
+    high: 20
+  min_samples_leaf:
+    type: int
+    low: 1
+    high: 10
+
+# ---------------------------------------------------------------------------
+# Artifact paths
+# ---------------------------------------------------------------------------
+artifacts:
+  output_dir: "data/processed/models"
+  model_prefix: "rf"
+  best_params_file: "data/processed/models/rf_best_params.json"
+  performance_file: "data/processed/models/rf_performance.json"

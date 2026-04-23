@@ -10,6 +10,8 @@ defaults:
   - model: xgboost
   - pipeline: train
   - training: training
+  - evaluation: default
+  - xai: dice
   - _self_        # Allows keys defined here to override defaults
 
 # ---------------------------------------------------------------------------

@@ -1,94 +1,74 @@
 # =============================================================================
-# model/xgboost.yaml — XGBoost Model Configuration
+# model/catboost.yaml — CatBoost Configuration
 # =============================================================================
 
-name: "xgboost"
+name: "catboost"
 requires_scaling: false
 
 # ---------------------------------------------------------------------------
 # Calibration
 # ---------------------------------------------------------------------------
 calibration:
-  method: "isotonic"    # "isotonic" or "sigmoid"
-  ensemble: false       # CalibratedClassifierCV ensemble mode
+  method: "isotonic"
+  ensemble: false
 
 # ---------------------------------------------------------------------------
 # Optuna Hyperparameter Tuning
 # ---------------------------------------------------------------------------
 optuna:
-  n_trials: 50          # Number of Optuna trials per target
-  direction: "maximize" # Maximise 5-fold CV ROC-AUC
-  timeout_seconds: null # null = no timeout
+  n_trials: 50
+  direction: "maximize"
+  timeout_seconds: null
 
 # ---------------------------------------------------------------------------
-# XGBoost Hyperparameter Defaults
-# (These are the starting point; Optuna will search the ranges below)
+# CatBoost Hyperparameter Defaults
 # ---------------------------------------------------------------------------
 hyperparameters:
-  n_estimators: 400
+  iterations: 1000
   learning_rate: 0.05
-  max_depth: 5
-  min_child_weight: 3
-  subsample: 0.8
-  colsample_bytree: 0.8
-  gamma: 0.1
-  reg_alpha: 0.1
-  reg_lambda: 1.0
-  eval_metric: "logloss"
-  tree_method: "hist"
-  n_jobs: -1
-  verbosity: 0
+  depth: 6
+  l2_leaf_reg: 3.0
+  bootstrap_type: "Bayesian"
+  random_strength: 1.0
+  bagging_temperature: 1.0
+  od_type: "Iter"
+  od_wait: 50
+  verbose: 0
+  allow_writing_files: false
 
 # ---------------------------------------------------------------------------
 # Optuna Search Ranges
 # ---------------------------------------------------------------------------
 search_space:
-  n_estimators:
+  iterations:
     type: int
-    low: 200
-    high: 800
-    step: 100
+    low: 500
+    high: 2000
+    step: 250
   learning_rate:
     type: float
     low: 0.01
-    high: 0.3
+    high: 0.2
     log: true
-  max_depth:
+  depth:
     type: int
-    low: 3
-    high: 8
-  min_child_weight:
-    type: int
-    low: 1
+    low: 4
     high: 10
-  subsample:
+  l2_leaf_reg:
     type: float
-    low: 0.6
-    high: 1.0
-  colsample_bytree:
-    type: float
-    low: 0.5
-    high: 1.0
-  gamma:
+    low: 1.0
+    high: 10.0
+    log: true
+  random_strength:
     type: float
     low: 0.0
-    high: 5.0
-  reg_alpha:
-    type: float
-    low: 0.0001
     high: 10.0
-    log: true
-  reg_lambda:
-    type: float
-    low: 0.0001
-    high: 10.0
-    log: true
 
 # ---------------------------------------------------------------------------
-# Artifact paths (relative to project root)
+# Artifact paths
 # ---------------------------------------------------------------------------
 artifacts:
   output_dir: "data/processed/models"
-  model_prefix: "xgb"
-  best_params_file: "data/processed/models/xgb_best_params.json"
-  performance_file: "data/processed/models/xgb_performance.json"
+  model_prefix: "cat"
+  best_params_file: "data/processed/models/cat_best_params.json"
+  performance_file: "data/processed/models/cat_performance.json"

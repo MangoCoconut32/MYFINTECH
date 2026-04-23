@@ -1,0 +1,23 @@
+# =============================================================================
+# xai/dice.yaml — DiCE Counterfactual Configuration
+# =============================================================================
+
+# Continuous features that can be varied
+continuous_features:
+  - "Age"
+  - "Income"
+  - "Wealth"
+  - "FamilyMembers"
+
+# Features allowed to vary for recourse
+features_to_vary:
+  - "Income"
+  - "Wealth"
+  - "FamilyMembers"
+
+# Name of the outcome column (for DiCE data wrapper)
+outcome_name: "target"
+
+# DiCE generation parameters
+n_counterfactuals: 3
+method: "random"  # "random" is robust for most models

@@ -1,11 +1,4 @@
-"""XGBoostModel — calibrated XGBoost classifier for the MYFINTECH pipeline.
-
-Key Design Choices
-------------------
-* **Hyperparameter injection**: All XGBoost params come from the Hydra config.
-* **Calibration**: Uses ``CalibratedClassifierCV`` with isotonic calibration.
-* **Optuna integration**: ``tune`` evaluates a single trial using 5-fold Stratified CV.
-"""
+"""EBMModel implementation for the MYFINTECH pipeline."""
 
 import logging
 import os
@@ -14,35 +7,20 @@ from typing import Any, Optional
 
 import numpy as np
 import pandas as pd
+from interpret.glassbox import ExplainableBoostingClassifier
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
-from xgboost import XGBClassifier
 
 from src.models.base_model import BaseFinanceModel
 
 logger = logging.getLogger(__name__)
 
 
-class XGBoostModel(BaseFinanceModel):
-    """Optuna-tuned, isotonically-calibrated XGBoost binary classifier.
+class EBMModel(BaseFinanceModel):
+    """Calibrated EBM classifier with internal 5-fold CV tuning."""
 
-    Attributes:
-        cfg: Hydra DictConfig sub-tree rooted at ``cfg.model``.
-        calibrated_model_: The fitted ``CalibratedClassifierCV`` wrapper.
-    """
-
-    def __init__(
-        self,
-        params: dict[str, Any],
-        cfg: Optional[Any] = None,
-    ) -> None:
-        """Initialize the XGBoost model.
-
-        Args:
-            params: Dictionary of XGBoost hyperparameters.
-            cfg: Full ``cfg.model`` DictConfig.
-        """
+    def __init__(self, params: dict[str, Any], cfg: Optional[Any] = None) -> None:
         super().__init__(params)
         self.cfg = cfg
         self.calibrated_model_: Optional[CalibratedClassifierCV] = None
@@ -53,26 +31,15 @@ class XGBoostModel(BaseFinanceModel):
         y_train: pd.Series,
         X_val: Optional[pd.DataFrame] = None,
         y_val: Optional[pd.Series] = None,
-    ) -> "XGBoostModel":
-        """Fit the calibrated XGBoost model on the training data.
-
-        Args:
-            X_train: Feature matrix for the training set.
-            y_train: Binary target labels.
-            X_val: Unused.
-            y_val: Unused.
-
-        Returns:
-            self: The fitted model instance.
-        """
-        logger.info("XGBoostModel: fitting on %d samples.", len(X_train))
-        base_xgb = XGBClassifier(**{**self.params, **self._fixed_params()})
+    ) -> "EBMModel":
+        logger.info("EBMModel: fitting on %d samples.", len(X_train))
+        base_ebm = ExplainableBoostingClassifier(**{**self.params, **self._fixed_params()})
 
         calib_method = self.cfg.calibration.method if self.cfg else "isotonic"
         calib_ensemble = self.cfg.calibration.ensemble if self.cfg else False
 
         calibrated = CalibratedClassifierCV(
-            estimator=base_xgb,
+            estimator=base_ebm,
             method=calib_method,
             cv=5,
             ensemble=calib_ensemble,
@@ -85,32 +52,15 @@ class XGBoostModel(BaseFinanceModel):
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
-        """Return hard class predictions."""
         self._check_is_fitted()
         probs = self.predict_proba(X)[:, 1]
         return (probs >= 0.5).astype(int)
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
-        """Return calibrated class probabilities."""
         self._check_is_fitted()
         return self.calibrated_model_.predict_proba(X.values)
 
-    def tune(
-        self,
-        X_train: pd.DataFrame,
-        y_train: pd.Series,
-        trial: Any,
-    ) -> float:
-        """Evaluate a single trial using 5-fold Stratified Cross-Validation.
-
-        Args:
-            X_train: Full engineered training feature matrix.
-            y_train: Target labels.
-            trial: Optuna Trial object.
-
-        Returns:
-            Mean Out-Of-Fold ROC AUC.
-        """
+    def tune(self, X_train: pd.DataFrame, y_train: pd.Series, trial: Any) -> float:
         search_space = self.cfg.search_space if self.cfg else None
         params = self._sample_params(trial, search_space)
         params.update(self._fixed_params())
@@ -125,7 +75,7 @@ class XGBoostModel(BaseFinanceModel):
             X_tr, X_va = X_values[train_idx], X_values[val_idx]
             y_tr, y_va = y_values[train_idx], y_values[val_idx]
 
-            model = XGBClassifier(**params)
+            model = ExplainableBoostingClassifier(**params)
             model.fit(X_tr, y_tr)
             probs = model.predict_proba(X_va)[:, 1]
             aucs.append(roc_auc_score(y_va, probs))
@@ -133,26 +83,18 @@ class XGBoostModel(BaseFinanceModel):
         return float(np.mean(aucs))
 
     def save(self, path: str) -> None:
-        """Serialise the fitted model to disk."""
         self._check_is_fitted()
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "wb") as fh:
             pickle.dump(self, fh)
-        logger.info("XGBoostModel saved to %s", path)
+        logger.info("EBMModel saved to %s", path)
 
     @staticmethod
     def _fixed_params() -> dict[str, Any]:
-        """Return fixed hyperparameters."""
-        return {
-            "eval_metric": "logloss",
-            "tree_method": "hist",
-            "n_jobs": -1,
-            "verbosity": 0,
-        }
+        return {"n_jobs": -1}
 
     @staticmethod
     def _sample_params(trial: Any, search_space: Optional[Any]) -> dict[str, Any]:
-        """Sample hyperparameters from Optuna trial."""
         params = {}
         if search_space:
             for name, spec in search_space.items():

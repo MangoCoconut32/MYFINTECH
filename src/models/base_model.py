@@ -103,6 +103,24 @@ class BaseFinanceModel(ABC):
         """
 
     @abstractmethod
+    def tune(
+        self,
+        X_train: pd.DataFrame,
+        y_train: pd.Series,
+        trial: Any,
+    ) -> float:
+        """Evaluate a single Optuna trial using 5-fold Stratified Cross-Validation.
+
+        Args:
+            X_train: Full engineered training feature matrix.
+            y_train: Target labels for the training set.
+            trial: An Optuna ``Trial`` object.
+
+        Returns:
+            The mean Out-Of-Fold metric (e.g. ROC AUC).
+        """
+
+    @abstractmethod
     def save(self, path: str) -> None:
         """Persist the fitted model to disk.
 
